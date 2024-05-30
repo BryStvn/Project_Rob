@@ -1,0 +1,332 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="myAGV">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.00016891 0.00015022 -0.052166"
+        rpy="0 0 0" />
+      <mass
+        value="3.8542" />
+      <inertia
+        ixx="0.010657"
+        ixy="-9.9164E-05"
+        ixz="-0.00070838"
+        iyy="0.01586"
+        iyz="4.1548E-05"
+        izz="0.023269" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Project_MAP3D/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Project_MAP3D/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="base_link">
+    <material>Gazebo/White</material>
+  </gazebo>
+  <link name="Lidar_link">
+    <inertial>
+      <origin xyz="0 0 0.0" rpy="0 0 0.0"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.0001"  ixy="0"  ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.031" length="0.014"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 0 0.5" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.031" length="0.014"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 0.5" />
+      </material>
+    </collision>
+  </link>
+  <gazebo reference="Lidar_link">
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+  <link
+    name="base_lidar_Link">
+    <inertial>
+      <origin
+        xyz="0.00014848 -0.0046199 -2.168E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.043858" />
+      <inertia
+        ixx="3.2511E-05"
+        ixy="-1.5158E-07"
+        ixz="-8.4787E-21"
+        iyy="3.7222E-05"
+        iyz="5.562E-20"
+        izz="3.259E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Project_MAP3D/meshes/base_lidar_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Project_MAP3D/meshes/base_lidar_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="base_lidar_Link">
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+
+  <!-- Definición del Lidar Hokuyo -->
+  <link name="base_hokuyo_link">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="negro">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <gazebo reference="base_hokuyo_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <link name="hokuyo_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.0001"  ixy="0"  ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.03"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 0 0.5" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.03"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 0.5" />
+      </material>
+    </collision>
+  </link>
+  <gazebo reference="hokuyo_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <joint
+    name="hokuyo_joint"
+    type="fixed">
+    <origin
+      xyz="0 0.025 0"
+      rpy="1.57 0 0" />
+    <parent
+      link="base_hokuyo_link" />
+    <child
+      link="hokuyo_link" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <joint
+    name="base_hokuyo_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_lidar_Link" />
+    <child
+      link="base_hokuyo_link" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <joint
+    name="base_lidar_joint"
+    type="revolute">
+    <origin
+      xyz="0.057702 -0.00012374 0.043"
+      rpy="1.5708 0 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="base_lidar_Link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="100"
+      velocity="100" />
+    <dynamics
+      damping="0.1"
+      friction="0.1" />
+  </joint>
+  <joint
+    name="Lidar_joint"
+    type="fixed">
+    <origin
+      xyz="0.081 0 -0.025"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Lidar_link" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+
+  <!--LIDAR CONFIGURATION-->
+  <gazebo reference="Lidar_link">
+    <sensor name="lidar" type="ray">
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>20</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>120</samples>
+            <resolution>1.000000</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <remapping>~/out:=laser_scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>Lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!--LIDAR HOKUYO CONFIGURATION -->
+  <gazebo reference="hokuyo_link">
+    <sensor name="lidar2" type="ray">
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>20</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>120</samples>
+            <resolution>1.000000</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="scan2" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <remapping>~/out:=laser_scan2</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>hokuyo_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Necessary hardware interface for controller -->
+  <ros2_control name="GazeboSystem" type="system">
+      <hardware>
+          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      </hardware>
+
+      <joint name="base_lidar_joint">
+          <command_interface name="position">
+              <param name="min">-1.5708</param>
+              <param name="max">1.5708</param>
+          </command_interface>
+          <state_interface name="position"/>
+          <param name="initial_position">0.0</param>  
+          </joint>
+  </ros2_control>
+  <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+          <robotNamespace>Project_MAP3D</robotNamespace>
+          <parameters>$(find Project_MAP3D)/config/position_controller.yaml</parameters>
+      </plugin>
+  </gazebo>
+</robot>
