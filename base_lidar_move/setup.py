@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'base_lidar_move = base_lidar_move.base_lidar_move:main',
+            'lidar_tf_broadcaster = my_robot_tf2.lidar_tf_broadcaster:main',
         ],
     },
 )

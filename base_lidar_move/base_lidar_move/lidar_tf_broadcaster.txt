@@ -1,0 +1,48 @@
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import TransformStamped
+import tf2_ros
+from tf_transformations import quaternion_from_euler
+
+class LidarTFBroadcaster(Node):
+
+    def __init__(self):
+        super().__init__('lidar_tf_broadcaster')
+
+        self.br = tf2_ros.TransformBroadcaster(self)
+        self.timer = self.create_timer(0.1, self.broadcast_transform)
+
+    def broadcast_transform(self):
+        t = TransformStamped()
+
+        # Configura los campos del mensaje TransformStamped
+        t.header.stamp = self.get_clock().now().to_msg()
+        t.header.frame_id = 'base_link'
+        t.child_frame_id = 'hokuyo_link'
+
+        # Configura la traslación
+        t.transform.translation.x = 0.2
+        t.transform.translation.y = 0.0
+        t.transform.translation.z = 0.1
+
+        # Configura la rotación (usando cuaterniones)
+        q = quaternion_from_euler(0, 0, 0)
+        t.transform.rotation.x = q[0]
+        t.transform.rotation.y = q[1]
+        t.transform.rotation.z = q[2]
+        t.transform.rotation.w = q[3]
+
+        self.br.sendTransform(t)
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = LidarTFBroadcaster()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
